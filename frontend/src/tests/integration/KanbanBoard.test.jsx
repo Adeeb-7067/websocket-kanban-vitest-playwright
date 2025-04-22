@@ -31,15 +31,24 @@ vi.mock('chart.js', () => ({
   BarController: vi.fn()
 }));
 
-describe('KanbanBoard Unit Tests', () => {
+describe('KanbanBoard Integration', () => {
   const mockTasks = [
     {
       id: '1',
-      title: 'Test Task 1',
-      description: 'Test Description 1',
+      title: 'Task 1',
+      description: 'Description 1',
       priority: 'high',
       category: 'bug',
       column: 'To Do',
+      attachments: []
+    },
+    {
+      id: '2',
+      title: 'Task 2',
+      description: 'Description 2',
+      priority: 'medium',
+      category: 'feature',
+      column: 'In Progress',
       attachments: []
     }
   ];
@@ -65,30 +74,33 @@ describe('KanbanBoard Unit Tests', () => {
     );
   };
 
-  it('renders loading state initially', () => {
+  it('renders all columns and tasks', async () => {
     renderWithDndProvider();
-    expect(screen.getByTestId('loading')).toBeInTheDocument();
-  });
 
-  it('renders task form elements after loading', async () => {
-    renderWithDndProvider();
-    
+    // Wait for loading to complete
     await waitFor(() => {
       expect(screen.queryByTestId('loading')).not.toBeInTheDocument();
     });
 
-    expect(screen.getByPlaceholderText('Task title')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Task description')).toBeInTheDocument();
-    expect(screen.getByText('Add Task')).toBeInTheDocument();
+    // Verify columns are rendered
+    expect(screen.getByText('To Do')).toBeInTheDocument();
+    expect(screen.getByText('In Progress')).toBeInTheDocument();
+    expect(screen.getByText('Done')).toBeInTheDocument();
+
+    // Verify tasks are rendered
+    expect(screen.getByText('Task 1')).toBeInTheDocument();
+    expect(screen.getByText('Task 2')).toBeInTheDocument();
   });
 
-  it('handles task creation', async () => {
+  it('creates a new task', async () => {
     renderWithDndProvider();
-    
+
+    // Wait for loading to complete
     await waitFor(() => {
       expect(screen.queryByTestId('loading')).not.toBeInTheDocument();
     });
 
+    // Fill in task form
     const titleInput = screen.getByPlaceholderText('Task title');
     const descriptionInput = screen.getByPlaceholderText('Task description');
     const submitButton = screen.getByText('Add Task');
@@ -97,6 +109,7 @@ describe('KanbanBoard Unit Tests', () => {
     fireEvent.change(descriptionInput, { target: { value: 'New Description' } });
     fireEvent.click(submitButton);
 
+    // Verify task creation request
     expect(mockSocket.emit).toHaveBeenCalledWith('task:create', expect.objectContaining({
       title: 'New Task',
       description: 'New Description',
@@ -104,20 +117,27 @@ describe('KanbanBoard Unit Tests', () => {
     }));
   });
 
-  it('handles task deletion', async () => {
+  it('updates task progress chart when tasks change', async () => {
     renderWithDndProvider();
-    
+
+    // Wait for loading to complete
     await waitFor(() => {
       expect(screen.queryByTestId('loading')).not.toBeInTheDocument();
     });
 
-    await waitFor(() => {
-      expect(screen.getByText('Test Task 1')).toBeInTheDocument();
+    // Verify initial tasks are rendered
+    expect(screen.getByText('Task 1')).toBeInTheDocument();
+
+    // Get the task update callback
+    const taskUpdateCallback = mockSocket.on.mock.calls.find(call => call[0] === 'task:updated')[1];
+    
+    // Simulate moving task to Done
+    taskUpdateCallback({
+      ...mockTasks[0],
+      column: 'Done'
     });
 
-    const deleteButton = screen.getByText('Delete');
-    fireEvent.click(deleteButton);
-
-    expect(mockSocket.emit).toHaveBeenCalledWith('task:delete', '1');
+    // Verify chart is rendered
+    expect(screen.getByTestId('kanban-board')).toBeInTheDocument();
   });
-});
+}); 

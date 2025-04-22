@@ -1,0 +1,341 @@
+/* Modern color palette */
+:root {
+  --primary: #2563eb;
+  --primary-light: #3b82f6;
+  --secondary: #64748b;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --text: #1e293b;
+  --text-light: #64748b;
+  --border: #e2e8f0;
+}
+
+/* Base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--background);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.app {
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: var(--background);
+}
+
+/* Kanban Board */
+.kanban-board {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.kanban-board h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* Columns Layout */
+.kanban-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.kanban-column {
+  background: var(--surface);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  min-height: 600px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease;
+}
+
+.kanban-column:hover {
+  transform: translateY(-2px);
+}
+
+.column-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--border);
+}
+
+/* Task Cards */
+.task-list {
+  min-height: 100px;
+}
+
+.task-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  cursor: move;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.task-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.task-card.dragging {
+  opacity: 0.5;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.task-card h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.task-card p {
+  color: var(--text-light);
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+/* Task Meta Information */
+.task-meta {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.priority, .category {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.priority.low { background: #dbeafe; color: #1e40af; }
+.priority.medium { background: #fef3c7; color: #92400e; }
+.priority.high { background: #fee2e2; color: #991b1b; }
+
+.category.bug { background: #fce7f3; color: #831843; }
+.category.feature { background: #dcfce7; color: #166534; }
+.category.enhancement { background: #ede9fe; color: #5b21b6; }
+
+/* Task Actions */
+.task-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.task-actions button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.task-actions button:first-child {
+  background: var(--primary);
+  color: white;
+}
+
+.task-actions button:last-child {
+  background: var(--danger);
+  color: white;
+}
+
+.task-actions button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* File Upload */
+.upload-button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background: var(--secondary);
+  color: white;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.upload-button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* Attachments */
+.attachments {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.attachment {
+  max-width: 150px;
+}
+
+.attachment img {
+  max-width: 100%;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.attachment a {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  background: var(--background);
+  border-radius: 0.5rem;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.75rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.attachment a:hover {
+  background: var(--border);
+}
+
+/* Task Form */
+.task-form {
+  background: var(--surface);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.task-form input,
+.task-form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.task-form input:focus,
+.task-form textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.task-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Progress Chart */
+.progress-chart {
+  background: var(--surface);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.completion-status {
+  margin-bottom: 2rem;
+}
+
+.completion-status h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
+.progress-bar {
+  height: 0.5rem;
+  background: var(--border);
+  border-radius: 9999px;
+  overflow: hidden;
+  margin: 0.5rem 0;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--success);
+  transition: width 0.3s ease;
+}
+
+/* Loading State */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  font-size: 1.125rem;
+  color: var(--text-light);
+}
+
+/* Drop Target */
+.column-drop-target {
+  background: var(--background);
+  border: 2px dashed var(--primary);
+  opacity: 0.7;
+}
+
+/* React Select Customization */
+.select__control {
+  border-color: var(--border) !important;
+  box-shadow: none !important;
+  border-radius: 0.5rem !important;
+  min-height: 42px !important;
+}
+
+.select__control:hover {
+  border-color: var(--primary) !important;
+}
+
+.select__control--is-focused {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+}
+
+.select__menu {
+  border-radius: 0.5rem !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+.select__option {
+  padding: 0.75rem 1rem !important;
+}
+
+.select__option--is-focused {
+  background-color: rgba(37, 99, 235, 0.1) !important;
+}
+
+.select__option--is-selected {
+  background-color: var(--primary) !important;
+} 
